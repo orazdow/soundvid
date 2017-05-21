@@ -1,4 +1,4 @@
-package soundvidxug2;
+package soundvidxug;
 
 import com.xuggle.mediatool.IMediaReader;
 import com.xuggle.mediatool.IMediaWriter;
@@ -15,6 +15,7 @@ public class main {
         
     IMediaReader audioreader = ToolFactory.makeReader(inputFile.toString());
     IMediaReader indexreader = ToolFactory.makeReader(inputFile.toString());
+    
     
     FrameReader frameReader = new FrameReader(indexreader);
     AudioReader audioReader = new AudioReader(audioreader);
