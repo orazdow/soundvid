@@ -4,41 +4,41 @@ package soundvidxug;
 public class SoundGen {
 
     int numOscs = 192;
-   // short out = 0;
+    double out = 0;
     double baseFreq = 50;
-   // short[] sineTable = new short[4096];
+    double[] sineTable = new double[4096];
     Osc oscs[];
     double srate = 44100;
-    Osc o = new Osc(200);
     
     SoundGen(int num){
         initOscs(num);
+        initTable(sineTable);
+    }
+    
+    void initTable(double[] table){
+        for(int i = 0; i < table.length; i++){
+            table[i] = Math.sin(2*Math.PI*(i/(double)table.length));
+        }
     }
 
     void initOscs(int num){ 
         numOscs = num;
         oscs = new Osc[numOscs];
-        double freq = baseFreq; //int a = 0;
+        double freq = baseFreq; 
         for(int i = 0; i < numOscs; i++){
-         //   freq += freq/25; 
           //  freq = baseFreq*(float)Math.pow(2,i/(float)12);
-              freq = baseFreq*(float)Math.pow(2,i/(double)25);
-          // System.out.println(a+" "+freq);  a++;  
+            freq = baseFreq*Math.pow(2,i/(double)25);
             oscs[i] = new Osc(freq, srate);
-          //  oscs[i].setFreq(freq);
-          //  System.out.println(oscs[i].freq+" "+oscs[i].step);
-        }// System.out.println("done: "+numOscs);
+        }
     }
     
     short incOut(){
-        double out = 0;
-        for (int i = 0; i <oscs.length; i++) {
-          
+        out = 0;
+        for (int i = 0; i <oscs.length; i++) {     
           out +=  oscs[i].incOut();     
         }
-        return (short)(out*(32000/numOscs));
-     //   return (short)(oscs[100].incOut()*5000);
-    // return out;
+        return (short)(out*(10000/numOscs));
+
     }
     
     void randomCoefs(){
@@ -51,7 +51,7 @@ public class SoundGen {
     for(int i = 0; i < in.length; i++){
         if(i < oscs.length){
             oscs[i].amp = in[i];
-        }else{ System.out.println("ERROR: pix array: "+in.length+" larger than osc array: "+oscs.length); break; }
+        }
     }
 }
     
@@ -59,18 +59,23 @@ class Osc{
     
    double phase = 0;
    double step;
+   double bstep;
    double srate = 44100;
    double amp = 1;
+   int len = sineTable.length;
    
    Osc(double freq){
-       step = 6.28318 * (freq/srate);
+       bstep = 6.28318 * (freq/srate);
+       step = len * (freq/srate);
    }
    Osc(double freq, double srate){
        this.srate = srate;
-       step = 6.28318 * (freq/srate);
+     bstep = 6.28318 * (freq/srate);
+     step = len * (freq/srate);
    } 
    void setFreq(double freq){
-       step = 6.28318 * (freq/srate);
+     bstep = 6.28318 * (freq/srate);
+     step = len * (freq/srate);
    }
    void setAmp(double amp){
        this.amp = amp;
@@ -78,7 +83,13 @@ class Osc{
    
    double incOut(){
        phase += step;
-       return (Math.sin(phase)*amp);
+       if(phase >= len){ phase = 0;}
+       return sineTable[(int)phase]*amp;
+   }
+   
+   double incOut2(){
+    phase += bstep;
+    return Math.sin(phase)*amp;
    }
    
 }
