@@ -27,9 +27,19 @@ public class SoundGen {
         double freq = baseFreq; 
         for(int i = 0; i < numOscs; i++){
           //  freq = baseFreq*(float)Math.pow(2,i/(float)12);
-            freq = baseFreq*Math.pow(2,i/(double)25);
+            freq = baseFreq*Math.pow(2,i/(double)60);
             oscs[i] = new Osc(freq, srate);
         }
+        printOscs();
+    }
+    
+    void printOscs(){
+        double f1 = oscs[0].freq;
+        double f2 = oscs[(int)Math.round(oscs.length*0.25)].freq;
+        double f3 = oscs[(int)Math.round(oscs.length*0.5)].freq;
+        double f4 = oscs[(int)Math.round(oscs.length*0.75)].freq;
+        double f5 = oscs[oscs.length-1].freq;
+        System.out.println("freqs:\nosc 1: "+f1+"\nosc 0.25: "+f2+"\nosc 0.5: "+f3+"\nosc 0.75: "+f4+"\nosc "+oscs.length+": "+f5);
     }
     
     short incOut(){
@@ -62,20 +72,27 @@ class Osc{
    double bstep;
    double srate = 44100;
    double amp = 1;
+   double freq;
+   
    int len = sineTable.length;
    
    Osc(double freq){
        bstep = 6.28318 * (freq/srate);
        step = len * (freq/srate);
+       this.freq = freq;
    }
    Osc(double freq, double srate){
        this.srate = srate;
      bstep = 6.28318 * (freq/srate);
      step = len * (freq/srate);
+       this.freq = freq;
+
    } 
    void setFreq(double freq){
      bstep = 6.28318 * (freq/srate);
      step = len * (freq/srate);
+       this.freq = freq;
+
    }
    void setAmp(double amp){
        this.amp = amp;

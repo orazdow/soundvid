@@ -7,7 +7,7 @@ import java.awt.image.Raster;
 public class PixData {
     
     int height, width, xdiv, ydiv, div, totalpix;  
-    int num = 190;  //<<approx, numcomes out higher.
+    int num = 350;  //<<approx, numcomes out higher.
     float coefs[];
     Raster raster;
     Object pixel = null;
@@ -24,6 +24,7 @@ public class PixData {
        // just square div shape
        div = (int)Math.sqrt(totalpix/num);
        outnum = getTileCount();
+        System.out.println("oscillator count: "+outnum);
        coefs = new float[outnum];      
     }
     

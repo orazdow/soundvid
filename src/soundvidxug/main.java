@@ -6,6 +6,24 @@ import com.xuggle.mediatool.ToolFactory;
 import java.io.File;
 
 public class main {
+    
+    /*
+    basefreq: 50
+    numoscs: 350
+    freq interval divisor: 60
+    freq power: 2
+    amp power: 1.8
+    amp invert: no
+   
+    basefreq: 50
+    numoscs: 190
+    freq interval divisor: 25
+    freq power: 2
+    amp power: 1.8
+    amp invert: no  
+    
+    add ctls, gui, preview mode..
+    */
 
 
     public static void main(String[] args) {
